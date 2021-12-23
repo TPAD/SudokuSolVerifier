@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SudokuXSolutionVerifier.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">17-214 Homework 2</a> &gt; <a href="index.source.html" class="el_package">edu.cmu.cs.cs214.hw2</a> &gt; <span class="el_source">SudokuXSolutionVerifier.java</span></div><h1>SudokuXSolutionVerifier.java</h1><pre class="source lang-java linenums">package edu.cmu.cs.cs214.hw2;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * SudokuXSolutionVerifier - This is a solution verifier for the 9x9 sudoku X puzzle.
+ * It takes two SudokuPuzzleGrids in the constructor, the first being an unsolved puzzle and the second being
+ * the proposed solution. The solution requires that the two diagonals also contain entries 1-9.
+ */
+public class SudokuXSolutionVerifier extends SudokuPuzzleSolutionVerifier {
+
+    /**
+     * Sets the puzzle and the solution puzzle grid for verification
+     * @param puzzle the unsolved puzzle
+     * @param solution the solution to the unsolved puzzle
+     */
+    SudokuXSolutionVerifier(SudokuPuzzleGrid puzzle, SudokuPuzzleGrid solution) {
+<span class="fc" id="L19">        super(puzzle, solution);</span>
+<span class="fc" id="L20">    }</span>
+
+    /**
+     * Checks whether the solution to puzzle grid is a valid solution
+     * @return true if solution is verified, false otherwise
+     */
+    @Override
+    boolean isValidSolution() {
+<span class="fc" id="L28">        SudokuPuzzleGrid puzzle = getSolutionSudokuPuzzleGrid();</span>
+<span class="fc" id="L29">        SudokuPuzzleGrid solution = getUnsolvedSudokuGrid();</span>
+<span class="pc bpc" id="L30" title="1 of 4 branches missed.">        boolean noCollisions = super.checkCollisions(puzzle) &amp;&amp; super.checkCollisions(solution);</span>
+<span class="fc" id="L31">        boolean matchingEntries = super.matchingEntries();</span>
+<span class="pc bpc" id="L32" title="1 of 6 branches missed.">        return solutionHasDistinctDiagonals() &amp;&amp; noCollisions &amp;&amp; matchingEntries;</span>
+    }
+
+    /**
+     * Verifies that the sudoku puzzle solution has distinct entries along both diagonals
+     * @return true if both diagonals in the solution puzzle contain entries 1-9
+     */
+    private boolean solutionHasDistinctDiagonals() {
+<span class="fc" id="L40">        List&lt;List&lt;Integer&gt;&gt; solGrid = this.getSolutionSudokuPuzzleGrid().getElements();</span>
+<span class="fc" id="L41">        List&lt;Integer&gt; diagOne = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L42">        List&lt;Integer&gt; diagTwo = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">        for (int i = 0; i &lt; solGrid.size(); i++) {</span>
+<span class="fc" id="L44">            List&lt;Integer&gt; row = solGrid.get(i);</span>
+<span class="fc" id="L45">            diagOne.add(row.get(i));</span>
+<span class="fc" id="L46">            diagTwo.add(row.get(row.size() - (i + 1)));</span>
+        }
+<span class="pc bpc" id="L48" title="1 of 4 branches missed.">        return this.listFreeOfCollision(diagOne) &amp;&amp; this.listFreeOfCollision(diagTwo);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

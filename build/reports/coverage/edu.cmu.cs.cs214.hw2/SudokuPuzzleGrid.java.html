@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SudokuPuzzleGrid.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">17-214 Homework 2</a> &gt; <a href="index.source.html" class="el_package">edu.cmu.cs.cs214.hw2</a> &gt; <span class="el_source">SudokuPuzzleGrid.java</span></div><h1>SudokuPuzzleGrid.java</h1><pre class="source lang-java linenums">package edu.cmu.cs.cs214.hw2;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
+/**
+ * SudokuPuzzleGrid - represents a 9x9 sudoku puzzle. The 9x9 invariants are enforced but the text representation must
+ * contain integers, not characters or floating point numbers.
+ * This class was purposely made non extensible and immutable. If you want to represent a variation of sudoku
+ * that is not 9x9, ¯\_(ツ)_/¯
+ */
+public final class SudokuPuzzleGrid  {
+
+    private static final int NUM_ROWS = 9;
+    private static final int NUM_COLS = 9;
+    private static final int MAX_ENTRY_NUM = 9;
+    private final List&lt;List&lt;Integer&gt;&gt; grid;
+    private final String stringRepresentation;
+
+
+    /**
+     * Initializer for a Sudoku Puzzle Grid
+     * @param path a path to local text file
+     * @throws FileNotFoundException if the parsing fails due to path failure
+     * @throws NumberFormatException if the integer tokenizer finds a non integer
+     */
+<span class="fc" id="L31">    public SudokuPuzzleGrid(String path) throws FileNotFoundException, NumberFormatException {</span>
+<span class="fc" id="L32">        this.grid = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L33">        this.stringRepresentation = parseTextFile(path);</span>
+<span class="fc" id="L34">    }</span>
+
+    /**
+     * Parses a text file assuming it is a valid text representation of a 9x9 sudoku puzzle.
+     * Propagates an exception outward if the textfile contains an invalid sudoku text puzzle.
+     * @param path The path of the file to parse
+     * @throws FileNotFoundException if the file path is malformed
+     * @throws NumberFormatException if the integer tokenizer finds a non integer.
+     * @return a string representation of the sudoku puzzle containedd in the text file
+     */
+    private String parseTextFile(String path) throws FileNotFoundException, NumberFormatException {
+<span class="fc" id="L45">        StringBuilder rep = new StringBuilder();</span>
+<span class="fc" id="L46">        File file = new File(path);</span>
+<span class="fc" id="L47">        int colCount, rowCount = 0;</span>
+<span class="fc" id="L48">        try (Scanner sc = new Scanner(file)) {</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">            while (sc.hasNextLine()) {</span>
+<span class="fc" id="L50">                List&lt;Integer&gt; col = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L51">                StringTokenizer st = new StringTokenizer(sc.nextLine());</span>
+<span class="fc" id="L52">                colCount = st.countTokens();</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">                if (colCount != NUM_COLS) {</span>
+<span class="fc" id="L54">                    throw new ArrayIndexOutOfBoundsException(&quot;Error: invalid number of entries column-wise&quot;);</span>
+                }
+<span class="fc bfc" id="L56" title="All 2 branches covered.">                while (st.hasMoreTokens()) {</span>
+<span class="fc" id="L57">                    String token = st.nextToken();</span>
+                    try {
+<span class="fc" id="L59">                        Integer num = Integer.parseInt(token);</span>
+<span class="fc" id="L60">                        rep.append(token);</span>
+<span class="fc" id="L61">                        rep.append(&quot; &quot;);</span>
+<span class="fc" id="L62">                        col.add(num);</span>
+<span class="fc" id="L63">                    } catch (NumberFormatException ex) {</span>
+<span class="fc" id="L64">                        System.out.println(&quot; &quot;);</span>
+<span class="fc" id="L65">                        throw ex;</span>
+<span class="fc" id="L66">                    }</span>
+<span class="fc" id="L67">                }</span>
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">                if (rowCount &lt;= NUM_ROWS - 1) {</span>
+<span class="fc" id="L69">                    rep.append(&quot;\n&quot;);</span>
+                }
+<span class="fc" id="L71">                grid.add(col);</span>
+<span class="fc" id="L72">                rowCount++;</span>
+<span class="fc" id="L73">            }</span>
+<span class="fc" id="L74">        } catch (FileNotFoundException e) {</span>
+<span class="fc" id="L75">            System.out.println(&quot;Please enter a valid text path&quot;);</span>
+<span class="fc" id="L76">            throw e;</span>
+<span class="fc" id="L77">        }</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        if (rowCount != NUM_ROWS) {</span>
+<span class="fc" id="L79">            throw new ArrayIndexOutOfBoundsException(&quot;Error: Invalid number of entries row-wise&quot;);</span>
+        }
+<span class="fc" id="L81">        return rep.toString();</span>
+    }
+
+    /**
+     * getter the 9x9 List of elements. this is the only method required for the client
+     * @return elements for testing purposes
+     */
+    public List&lt;List&lt;Integer&gt;&gt; getElements() {
+<span class="fc" id="L89">        return this.grid;</span>
+    }
+
+    // visual representations of the puzzle is nice
+    @Override
+    public String toString() {
+<span class="fc" id="L95">        return this.stringRepresentation;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

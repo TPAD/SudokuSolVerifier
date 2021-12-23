@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SudokuPuzzleSolutionVerifier.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">17-214 Homework 2</a> &gt; <a href="index.source.html" class="el_package">edu.cmu.cs.cs214.hw2</a> &gt; <span class="el_source">SudokuPuzzleSolutionVerifier.java</span></div><h1>SudokuPuzzleSolutionVerifier.java</h1><pre class="source lang-java linenums">package edu.cmu.cs.cs214.hw2;
+
+import java.util.ArrayList;
+import java.util.List;
+/**
+ * SudokuSolutionVerifierInterface - blueprint for a sudoku solution verifier
+ * Contains methods to verify the correctness of a board, i.e. that a board meets the required criteria for
+ * the version of sudoku that require distinct entries row-wise, column-wise, and in each 3x3 subgrid
+ */
+abstract class SudokuPuzzleSolutionVerifier {
+
+    private static final int MAX_INDEX = 8;
+    private static final int MAX_SUB_INDEX = 2;
+    private SudokuPuzzleGrid puzzle;
+    private SudokuPuzzleGrid solution;
+
+    /**
+     * Initializes the puzzle and the solution grids for use in calculations. Though the intention
+     * is that the first parameter should be an unsolved sudoku grid and the second parameter should
+     * a solved sudoku grid, neither of those are guaranteed
+     * @param puzzle unsolved sudoku puzzle grid
+     * @param solution solved sudoku puzzle grid
+     */
+<span class="fc" id="L24">    SudokuPuzzleSolutionVerifier(SudokuPuzzleGrid puzzle, SudokuPuzzleGrid solution) {</span>
+<span class="fc" id="L25">        this.puzzle = puzzle;</span>
+<span class="fc" id="L26">        this.solution = solution;</span>
+<span class="fc" id="L27">    }</span>
+
+    /**
+     * Determines whether the solution grid is a valid solution for the puzzleGrid
+     * @return true if solution is a valid solution, false if not
+     */
+     abstract boolean isValidSolution();
+
+    /**
+     * Determines the validity of a sudoku puzzle grid entry-wise i.e. checks that there are no repetions row-wise,
+     * column-wise, and grid wise
+     * @param puzzle sudoku puzzle grid
+     * @return true if puzzle contains collisions, false otherwise
+     */
+     boolean checkCollisions(SudokuPuzzleGrid puzzle) {
+<span class="fc bfc" id="L42" title="All 2 branches covered.">        for (int i = 0; i &lt;= MAX_INDEX; i++) {</span>
+<span class="fc" id="L43">            List&lt;Integer&gt; row = getRow(i, puzzle);</span>
+<span class="fc" id="L44">            List&lt;Integer&gt; col = getColumn(i, puzzle);</span>
+<span class="fc bfc" id="L45" title="All 4 branches covered.">            if (!(listFreeOfCollision(row) &amp;&amp; listFreeOfCollision(col))) {</span>
+<span class="fc" id="L46">                return false;</span>
+            }
+        }
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        for (int i = 0; i &lt;= MAX_SUB_INDEX; i++) {</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">            for (int j = 0; j &lt;= MAX_SUB_INDEX; j++) {</span>
+<span class="fc" id="L51">                List&lt;Integer&gt; subGrid = getSubGrid(i, j, puzzle);</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">                if (!listFreeOfCollision(subGrid)) {</span>
+<span class="fc" id="L53">                    return false;</span>
+                }
+            }
+        }
+<span class="fc" id="L57">        return true;</span>
+    }
+
+    /**
+     * Returns the 3x3 subgrid of the sudoku puzzle at index or an empty List if the index is invalid.
+     * So it is up to the verifier to decide what to do in that case.
+     * @param i row index of which grid to get 0-2
+     * @param j column index of which grid to get 0-2
+     * @param puzzle the puzzle from which the subgrid is extracted
+     * @return the desired subgrid from puzzle
+     */
+    private List&lt;Integer&gt; getSubGrid(int i, int j, SudokuPuzzleGrid puzzle) {
+        List&lt;List&lt;Integer&gt;&gt; elems;
+<span class="fc" id="L70">        List&lt;Integer&gt; grid = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L71">        int[] start = {0, MAX_SUB_INDEX + 1, 2*MAX_SUB_INDEX + 2};              // 0, 3, 6</span>
+<span class="fc" id="L72">        int[] end = {MAX_SUB_INDEX, 2*MAX_SUB_INDEX + 1, 2*2*MAX_SUB_INDEX};    // 2, 5, 8</span>
+<span class="fc" id="L73">        elems = puzzle.getElements();</span>
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        for (int k = start[i]; k &lt;= end[i]; k++) {</span>
+<span class="fc" id="L75">            List&lt;Integer&gt; row = elems.get(k);</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">            for (int l = start[j]; l&lt;= end[j]; l++) {</span>
+<span class="fc" id="L77">                grid.add(row.get(l));</span>
+            }
+        }
+<span class="fc" id="L80">        return grid;</span>
+    }
+
+    /**
+     * Returns the row of the sudoku at index or an empty List if the index is invalid.
+     * It is up to the verifier to decide what to do in that case.
+     * @param index row index, valid 0-8
+     * @param puzzle the puzzle from which the row is extracted
+     * @return row at index
+     */
+    private List&lt;Integer&gt; getRow(int index, SudokuPuzzleGrid puzzle) {
+<span class="fc" id="L91">        List&lt;List&lt;Integer&gt;&gt; grid = puzzle.getElements();</span>
+<span class="fc" id="L92">        return grid.get(index);</span>
+    }
+
+    /**
+     * Returns the column of the sudoku at index or an empty List if the index is invalid.
+     * It is up to the verifier to decide what to do in that case.
+     * @param index column index, valid: 0-8
+     * @param puzzle the puzzle from which the column is extracted
+     * @return
+     */
+    private List&lt;Integer&gt; getColumn(int index, SudokuPuzzleGrid puzzle) {
+<span class="fc" id="L103">        List&lt;List&lt;Integer&gt;&gt; grid = puzzle.getElements();</span>
+<span class="fc" id="L104">        List&lt;Integer&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L105" title="All 2 branches covered.">        for(List&lt;Integer&gt; row: grid) {</span>
+<span class="fc" id="L106">            result.add(row.get(index));</span>
+<span class="fc" id="L107">        }</span>
+<span class="fc" id="L108">        return result;</span>
+    }
+
+    /**
+     * checks if the list contains duplicate elements, ignoring 0 using brute force;
+     * @param list list to check for duplicates
+     * @return true if list contains duplicates, false otherwise
+     */
+    boolean listFreeOfCollision(List&lt;Integer&gt; list) {
+<span class="fc bfc" id="L117" title="All 2 branches covered.">        for (int i = 0; i &lt; list.size() - 1; i++) {</span>
+<span class="fc bfc" id="L118" title="All 2 branches covered.">            for (int j = i + 1; j &lt; list.size(); j++) {</span>
+<span class="fc bfc" id="L119" title="All 6 branches covered.">                if ((list.get(i) != 0) &amp;&amp; (list.get(j) != 0) &amp;&amp; (list.get(i) == list.get(j))) {</span>
+<span class="fc" id="L120">                    return false;</span>
+                }
+            }
+        }
+<span class="fc" id="L124">        return true;</span>
+    }
+
+    /**
+     * Verifies that the filled entries in the unsolved sudoku puzzle grid match those of the solution grid.
+     * @return false if they don't match or if the solution puzzle grid contains an empty space
+     */
+    boolean matchingEntries() {
+<span class="fc" id="L132">        List&lt;List&lt;Integer&gt;&gt; puzzleElements = this.puzzle.getElements();</span>
+<span class="fc" id="L133">        List&lt;List&lt;Integer&gt;&gt; solutionElements = this.solution.getElements();</span>
+<span class="fc bfc" id="L134" title="All 2 branches covered.">        for (int i = 0; i &lt;= MAX_INDEX; i++) {</span>
+<span class="fc" id="L135">            List&lt;Integer&gt; puzzleRow = puzzleElements.get(i);</span>
+<span class="fc" id="L136">            List&lt;Integer&gt; solutionRow = solutionElements.get(i);</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">            for (int j = 0; j &lt;= MAX_INDEX; j++) {</span>
+<span class="fc" id="L138">                int puzzleVal = puzzleRow.get(j);</span>
+<span class="fc" id="L139">                int solutionVal = solutionRow.get(j);</span>
+<span class="fc bfc" id="L140" title="All 2 branches covered.">                if (solutionVal == 0) {</span>
+<span class="fc" id="L141">                    return false;</span>
+                }
+<span class="fc bfc" id="L143" title="All 4 branches covered.">                if ((puzzleVal != 0) &amp;&amp; (puzzleVal != solutionVal)) {</span>
+<span class="fc" id="L144">                    return false;</span>
+                }
+            }
+        }
+<span class="fc" id="L148">        return true;</span>
+    }
+
+    /**
+     * Gets the &quot;supposedly&quot; unsolved sudoku puzzle grid
+     * @return the sudoku puzzle passed in as unsolved in the constructor
+     */
+    public SudokuPuzzleGrid getUnsolvedSudokuGrid() {
+<span class="fc" id="L156">        return this.puzzle;</span>
+    }
+
+    /**
+     * Gets the proposed solution for the unsolved puzzle grid
+     * @return the sudoku puzzle passed in as the solution in the constructor
+     */
+    public SudokuPuzzleGrid getSolutionSudokuPuzzleGrid() {
+<span class="fc" id="L164">        return this.solution;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

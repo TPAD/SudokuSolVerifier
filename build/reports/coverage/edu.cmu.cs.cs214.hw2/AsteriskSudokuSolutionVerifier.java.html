@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AsteriskSudokuSolutionVerifier.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">17-214 Homework 2</a> &gt; <a href="index.source.html" class="el_package">edu.cmu.cs.cs214.hw2</a> &gt; <span class="el_source">AsteriskSudokuSolutionVerifier.java</span></div><h1>AsteriskSudokuSolutionVerifier.java</h1><pre class="source lang-java linenums">package edu.cmu.cs.cs214.hw2;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * AsteriskSudokuSolutionVerifier - This is a solution verifier for the 9x9 asterisk sudoku puzzle.
+ * It takes two SudokuPuzzleGrids in the constructor, the first intended as an unsolved puzzle and
+ * the second intended to be the solution puzzle to the unsolved one using asterisk sudoku rules.
+ */
+public class AsteriskSudokuSolutionVerifier extends SudokuPuzzleSolutionVerifier {
+
+    private final List&lt;Integer&gt; asterisk;
+
+    /**
+     * Sets the solution puzzle and the unsolved puzzle to be used in the verification process with the
+     * asterisk sudoku rules
+     * @param puzzle unsolved puzzle
+     * @param solution the solution to the unsolved puzzle
+     */
+    AsteriskSudokuSolutionVerifier(SudokuPuzzleGrid puzzle, SudokuPuzzleGrid solution) {
+<span class="fc" id="L22">        super(puzzle, solution);</span>
+<span class="fc" id="L23">        asterisk = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L24">    }</span>
+
+    /**
+     * Verifies that the intended solution puzzle is indeed a solution to the unsolved puzzle grid given
+     * in the constructor using the rules of asterisk sudoku
+     * @return true if the solution grid is indeed a solution to the unsolved grid, false otherwise
+     */
+    @Override
+    boolean isValidSolution() {
+<span class="fc" id="L33">        SudokuPuzzleGrid puzzle = getSolutionSudokuPuzzleGrid();</span>
+<span class="fc" id="L34">        SudokuPuzzleGrid solution = getUnsolvedSudokuGrid();</span>
+<span class="pc bpc" id="L35" title="2 of 4 branches missed.">        boolean noCollisions = super.checkCollisions(puzzle) &amp;&amp; super.checkCollisions(solution);</span>
+<span class="fc" id="L36">        boolean matchingEntries = super.matchingEntries();</span>
+<span class="pc bpc" id="L37" title="3 of 6 branches missed.">        return asteriskCompliance(solution.getElements()) &amp;&amp; noCollisions &amp;&amp; matchingEntries;</span>
+    }
+
+    /**
+     * Check for the special rules required of the asterisk sudoku
+     * @param grid the proposed solution grid to the unsolved grid
+     * @return true if the asterisk requirement is met, false otherwise
+     */
+    private boolean asteriskCompliance(List&lt;List&lt;Integer&gt;&gt; grid) {
+<span class="fc" id="L46">        int size = grid.size();</span>
+<span class="fc" id="L47">        int half = (size - 1)/2;</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">        for (int i = 0; i &lt; size; i++) {</span>
+<span class="fc" id="L49">            List&lt;Integer&gt; row = grid.get(i);</span>
+<span class="fc bfc" id="L50" title="All 4 branches covered.">            if ((i == 1) || (i == (size - 2))) {</span>
+<span class="fc" id="L51">                this.asterisk.add(row.get(half));</span>
+            }
+<span class="fc bfc" id="L53" title="All 4 branches covered.">            if ((i == 2) || (i == half + 2)) {</span>
+<span class="fc" id="L54">                this.asterisk.add(row.get(i));</span>
+            }
+<span class="fc bfc" id="L56" title="All 2 branches covered.">            if (i == half) {</span>
+<span class="fc" id="L57">                this.asterisk.add(row.get(1));</span>
+<span class="fc" id="L58">                this.asterisk.add(row.get(half));</span>
+<span class="fc" id="L59">                this.asterisk.add(row.get(size - 2));</span>
+            }
+        }
+<span class="fc" id="L62">        return this.listFreeOfCollision(this.asterisk);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

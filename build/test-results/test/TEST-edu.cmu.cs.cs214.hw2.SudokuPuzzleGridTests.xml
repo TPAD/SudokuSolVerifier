@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="edu.cmu.cs.cs214.hw2.SudokuPuzzleGridTests" tests="6" skipped="0" failures="0" errors="0" timestamp="2019-09-14T03:15:11" hostname="Antonios-MBP.wv.cc.cmu.edu" time="0.025">
+  <properties/>
+  <testcase name="testSudokuPuzzleGridMalformedInput1" classname="edu.cmu.cs.cs214.hw2.SudokuPuzzleGridTests" time="0.002"/>
+  <testcase name="testSudokuPuzzleGridMalformedInput2" classname="edu.cmu.cs.cs214.hw2.SudokuPuzzleGridTests" time="0.001"/>
+  <testcase name="testSudokuPuzzleGridFileNotFound" classname="edu.cmu.cs.cs214.hw2.SudokuPuzzleGridTests" time="0.013"/>
+  <testcase name="testSudokuPuzzleGridInvalidToken" classname="edu.cmu.cs.cs214.hw2.SudokuPuzzleGridTests" time="0.002"/>
+  <testcase name="testSudokuPuzzleGridToString" classname="edu.cmu.cs.cs214.hw2.SudokuPuzzleGridTests" time="0.002"/>
+  <testcase name="testSudokuPuzzleGridDimensions" classname="edu.cmu.cs.cs214.hw2.SudokuPuzzleGridTests" time="0.001"/>
+  <system-out><![CDATA[Please enter a valid text path
+ 
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

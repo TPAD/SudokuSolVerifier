@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="8.7">
+<file name="/Users/APadilla/Documents/CMU-4/214/apadilla/homework/2/src/main/java/edu/cmu/cs/cs214/hw2/AsteriskSudokuSolutionVerifier.java">
+</file>
+<file name="/Users/APadilla/Documents/CMU-4/214/apadilla/homework/2/src/main/java/edu/cmu/cs/cs214/hw2/HyperSudokuSolutionVerifier.java">
+</file>
+<file name="/Users/APadilla/Documents/CMU-4/214/apadilla/homework/2/src/main/java/edu/cmu/cs/cs214/hw2/SudokuPuzzleGrid.java">
+</file>
+<file name="/Users/APadilla/Documents/CMU-4/214/apadilla/homework/2/src/main/java/edu/cmu/cs/cs214/hw2/SudokuPuzzleSolutionVerifier.java">
+</file>
+<file name="/Users/APadilla/Documents/CMU-4/214/apadilla/homework/2/src/main/java/edu/cmu/cs/cs214/hw2/SudokuSolutionVerifier.java">
+</file>
+<file name="/Users/APadilla/Documents/CMU-4/214/apadilla/homework/2/src/main/java/edu/cmu/cs/cs214/hw2/SudokuXSolutionVerifier.java">
+</file>
+<file name="/Users/APadilla/Documents/CMU-4/214/apadilla/homework/2/src/main/java/edu/cmu/cs/cs214/hw2/TraditionalSudokuSolutionVerifier.java">
+</file>
+</checkstyle>

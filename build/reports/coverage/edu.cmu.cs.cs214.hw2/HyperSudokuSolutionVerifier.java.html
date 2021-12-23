@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>HyperSudokuSolutionVerifier.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">17-214 Homework 2</a> &gt; <a href="index.source.html" class="el_package">edu.cmu.cs.cs214.hw2</a> &gt; <span class="el_source">HyperSudokuSolutionVerifier.java</span></div><h1>HyperSudokuSolutionVerifier.java</h1><pre class="source lang-java linenums">package edu.cmu.cs.cs214.hw2;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * HyperSudokuSolutionVerifier - This is a solution verifier for the 9x9 hyper sudoku puzzle.
+ * It takes two SudokuPuzzleGrids in the constructor, the first being an unsolved puzzle
+ * and the second being a proposed solution. The solution requires four middle squares to
+ * also contain the entries 1-9.
+ */
+public class HyperSudokuSolutionVerifier extends SudokuPuzzleSolutionVerifier {
+
+    private final List&lt;Integer&gt; gridOne;
+    private final List&lt;Integer&gt; gridTwo;
+    private final List&lt;Integer&gt; gridThree;
+    private final List&lt;Integer&gt; gridFour;
+
+
+    /**
+     * Sets the puzzle and the solution puzzle grid for verification given hypersudoku solution
+     * @param puzzle the unsolved puzzle
+     * @param solution the hypersudoku solution to the unsolved puzzle
+     */
+    HyperSudokuSolutionVerifier(SudokuPuzzleGrid puzzle, SudokuPuzzleGrid solution) {
+<span class="fc" id="L26">        super(puzzle, solution);</span>
+<span class="fc" id="L27">        gridOne = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L28">        gridTwo = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L29">        gridThree = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L30">        gridFour = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L31">    }</span>
+
+    /**
+     * Checks the that the proposed solution to the unsolved sudoku puzzle grid is indeed a solution
+     * @return true if the solution grid is a solution to unsolved puzzle with the hypersudoku rules, false otherwise
+     */
+    @Override
+    boolean isValidSolution() {
+<span class="fc" id="L39">        SudokuPuzzleGrid puzzle = getSolutionSudokuPuzzleGrid();</span>
+<span class="fc" id="L40">        SudokuPuzzleGrid solution = getUnsolvedSudokuGrid();</span>
+<span class="fc bfc" id="L41" title="All 4 branches covered.">        boolean noCollisions = super.checkCollisions(puzzle) &amp;&amp; super.checkCollisions(solution);</span>
+<span class="fc" id="L42">        boolean matchingEntries = super.matchingEntries();</span>
+<span class="fc bfc" id="L43" title="All 6 branches covered.">        return gridsContainNoCollisions() &amp;&amp; noCollisions &amp;&amp; matchingEntries;</span>
+    }
+
+    /**
+     * checks if the required subgrids of a hyper sudoku puzzle contain no collisions
+     * @return true if all subgrids contain distinct values
+     */
+    private boolean gridsContainNoCollisions() {
+<span class="fc" id="L51">        List&lt;List&lt;Integer&gt;&gt; solGrid = this.getSolutionSudokuPuzzleGrid().getElements();</span>
+<span class="fc" id="L52">        getAltSolGrids(solGrid);</span>
+<span class="fc" id="L53">        boolean firstIsValid = this.listFreeOfCollision(this.gridOne);</span>
+<span class="fc" id="L54">        boolean secondIsValid = this.listFreeOfCollision(this.gridTwo);</span>
+<span class="fc" id="L55">        boolean thirdIsValid = this.listFreeOfCollision(this.gridThree);</span>
+<span class="fc" id="L56">        boolean fourthIsValid= this.listFreeOfCollision(this.gridFour);</span>
+<span class="pc bpc" id="L57" title="3 of 8 branches missed.">        return firstIsValid &amp;&amp; secondIsValid &amp;&amp; thirdIsValid &amp;&amp; fourthIsValid;</span>
+    }
+
+    /**
+     * Loads the subgrid arrays with their corresponding values from the solution board
+     * @param superGrid the solution grid
+     */
+    private void getAltSolGrids(List&lt;List&lt;Integer&gt;&gt; superGrid) {
+<span class="fc" id="L65">        int size = superGrid.size();</span>
+<span class="fc" id="L66">        int endIndex = ((size) - 1)/2;</span>
+<span class="fc bfc" id="L67" title="All 2 branches covered.">        for (int i = 1; i &lt; endIndex; i++) {</span>
+<span class="fc" id="L68">            List&lt;Integer&gt; row = superGrid.get(i);</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">            for (int j = 1; j &lt; endIndex; j++) {</span>
+<span class="fc" id="L70">                this.gridOne.add(row.get(j));</span>
+            }
+<span class="fc bfc" id="L72" title="All 2 branches covered.">            for (int j = endIndex + 1; j &lt; size - 1; j++) {</span>
+<span class="fc" id="L73">                this.gridTwo.add(row.get(j));</span>
+            }
+        }
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        for (int i = endIndex + 1; i &lt; superGrid.size() - 1; i++) {</span>
+<span class="fc" id="L77">            List&lt;Integer&gt; row = superGrid.get(i);</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">            for (int j = 1; j &lt;  endIndex; j++) {</span>
+<span class="fc" id="L79">                this.gridThree.add(row.get(j));</span>
+            }
+<span class="fc bfc" id="L81" title="All 2 branches covered.">            for (int j = endIndex + 1; j &lt; size - 1; j++) {</span>
+<span class="fc" id="L82">                this.gridFour.add(row.get(j));</span>
+            }
+        }
+<span class="fc" id="L85">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.2.201808211720</span></div></body></html>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="edu.cmu.cs.cs214.hw2.TraditionalSudokuSolutionVerifierTests" tests="5" skipped="0" failures="0" errors="0" timestamp="2019-09-14T03:15:11" hostname="Antonios-MBP.wv.cc.cmu.edu" time="0.014">
+  <properties/>
+  <testcase name="testValidSolution" classname="edu.cmu.cs.cs214.hw2.TraditionalSudokuSolutionVerifierTests" time="0.003"/>
+  <testcase name="testCollision" classname="edu.cmu.cs.cs214.hw2.TraditionalSudokuSolutionVerifierTests" time="0.002"/>
+  <testcase name="testEmptyEntrySolution" classname="edu.cmu.cs.cs214.hw2.TraditionalSudokuSolutionVerifierTests" time="0.002"/>
+  <testcase name="testInvalidSolution" classname="edu.cmu.cs.cs214.hw2.TraditionalSudokuSolutionVerifierTests" time="0.002"/>
+  <testcase name="testCollisionRowSub" classname="edu.cmu.cs.cs214.hw2.TraditionalSudokuSolutionVerifierTests" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
